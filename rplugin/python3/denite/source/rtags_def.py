@@ -5,8 +5,6 @@ from denite.source.base import Base
 import denite.util
 
 sys.path.insert(1, os.path.dirname(__file__))
-from denite_gtags import TagsBase
-
 
 class Source(Base):
     def __init__(self, vim):
