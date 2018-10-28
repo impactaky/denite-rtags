@@ -6,6 +6,7 @@ import denite.util
 
 sys.path.insert(1, os.path.dirname(__file__))
 
+
 class Source(Base):
     def __init__(self, vim):
         super().__init__(vim)
@@ -15,11 +16,18 @@ class Source(Base):
 
     def gather_candidates(self, context):
 
-        search_info = "{}:{}:{}".format(self.vim.current.window.buffer.name,
-                                        self.vim.current.window.cursor[0],
-                                        self.vim.current.window.cursor[1] + 1)
-        ret = subprocess.run(["rc", "--references",
-                                    search_info], stdout=subprocess.PIPE)
+        if context['args']:
+            ret = subprocess.run(
+                ["rc", "--references-name", context['args'][0]],
+                stdout=subprocess.PIPE)
+        else:
+            search_info = "{}:{}:{}".format(
+                self.vim.current.window.buffer.name,
+                self.vim.current.window.cursor[0],
+                self.vim.current.window.cursor[1] + 1)
+            ret = subprocess.run(
+                ["rc", "--references", search_info], stdout=subprocess.PIPE)
+
         if ret.returncode != 0:
             return []
 
