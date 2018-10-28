@@ -15,11 +15,17 @@ class Source(Base):
 
     def gather_candidates(self, context):
 
-        search_info = "{}:{}:{}".format(self.vim.current.window.buffer.name,
-                                        self.vim.current.window.cursor[0],
-                                        self.vim.current.window.cursor[1] + 1)
-        ret = subprocess.run(["rc", "--follow-location",
-                                    search_info], stdout=subprocess.PIPE)
+        if context['args']:
+            ret = subprocess.run(
+                ["rc", "--display-name", "--find-symbols", context['args'][0]], 
+                stdout=subprocess.PIPE)
+        else:
+            search_info = "{}:{}:{}".format(self.vim.current.window.buffer.name,
+                                            self.vim.current.window.cursor[0],
+                                            self.vim.current.window.cursor[1] + 1)
+            ret = subprocess.run(["rc", "--follow-location",
+                                        search_info], stdout=subprocess.PIPE)
+
         if ret.returncode != 0:
             return []
 
