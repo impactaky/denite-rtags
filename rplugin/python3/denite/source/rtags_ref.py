@@ -18,7 +18,7 @@ class Source(Base):
 
         if context['args']:
             ret = subprocess.run(
-                ["rc", "--references-name", context['args'][0]],
+                ["rc", "-K", "--references-name", context['args'][0]],
                 stdout=subprocess.PIPE)
         else:
             search_info = "{}:{}:{}".format(
@@ -26,7 +26,7 @@ class Source(Base):
                 self.vim.current.window.cursor[0],
                 self.vim.current.window.cursor[1] + 1)
             ret = subprocess.run(
-                ["rc", "--references", search_info], stdout=subprocess.PIPE)
+                ["rc", "-K", "--references", search_info], stdout=subprocess.PIPE)
 
         if ret.returncode != 0:
             return []
